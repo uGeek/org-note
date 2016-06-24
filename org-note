@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+#
+# take a quick note to an emacs org-mode file
+# params:
+# $1: the note ("buy milk")
+# $2: space separated tags ("grocery important")
+# example:
+# ❯  ./org-note.sh "a note" "emacs shell"
+# * a note <2016-06-25 Sa>                                           :emacs:shell:
+
+MIN_LINE_LEN=80
+NOTE_FILE=$HOME/.notes.org
+
+
+org_timestamp="<"$(date "+%Y-%m-%d %a")">"
+org_headline="* $1 $org_timestamp"
+
+if [ "$2" == "" ]; then
+    org_tags=""
+    spacer=""
+else
+    # convert given tags to org-mode tags (:tag:)
+    org_tags=":"$(echo $2 | tr ' ' ':')":"
+
+    # calculate a spacer for tag alignment
+    org_line="$org_headline$org_tags"
+    org_line_len="${#org_line}"
+    delta=1
+    if [ $org_line_len -le $MIN_LINE_LEN  ]; then
+        delta=$(($MIN_LINE_LEN - $org_line_len))
+    fi
+    spacer=$(head -c $delta < /dev/zero | tr '\0' ' ')
+fi
+
+
+org_note="$org_headline$spacer$org_tags"
+echo "$org_note"
+echo "$org_note" >> $HOME/.notes.org
