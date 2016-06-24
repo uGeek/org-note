@@ -1,3 +1,5 @@
+# org-note
+
 usage:
 ```sh
 ./org-note "a note" "emacs shell"
