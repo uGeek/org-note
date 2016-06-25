@@ -3,7 +3,7 @@
 # take a quick note to an emacs org-mode file
 # example:
 # ❯ ./org-note -t "a todo note" "emacs shell"
-# * TODO a todo <2016-06-25 Sa>                                      :emacs:shell:
+# * TODO a todo note <2016-06-25 Sa>                                 :emacs:shell:
 
 for i in "$@"
 do

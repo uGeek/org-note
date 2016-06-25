@@ -1,11 +1,11 @@
 # org-note
 
-usage:
+## usage:
 ```sh
-./org-note "a note" "emacs shell"
+./org-note "a todo note" "emacs shell" --todo
 ```
 adds the line
 ```org
-* a note <2016-06-25 Sa>                                           :emacs:shell:
+* TODO a todo note <2016-06-25 Sa>                                   :emacs:shell:
 ```
-to $HOME/.notes.org and prints it to stdout
+to **$HOME/.notes.org** and prints it to stdout.
