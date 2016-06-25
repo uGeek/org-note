@@ -1,26 +1,56 @@
 #!/usr/bin/env bash
 #
 # take a quick note to an emacs org-mode file
-# params:
-# $1: the note ("buy milk")
-# $2: space separated tags ("grocery important")
 # example:
-# ❯  ./org-note.sh "a note" "emacs shell"
-# * a note <2016-06-25 Sa>                                           :emacs:shell:
+# ❯ ./org-note -t "a todo note" "emacs shell"
+# * TODO a todo <2016-06-25 Sa>                                      :emacs:shell:
+
+for i in "$@"
+do
+    case $i in
+        -h|--help)
+            echo -e "Usage: org-note [-t] HEADLINE [TAGS]
+
+            take a quick note to an emacs org-mode file
+
+            Options:
+            -h, --help          show this help message
+            -t, --todo          set entry as a TODO"
+            exit 0
+        ;;
+        -t|--todo)
+            IS_TODO="TODO "
+        ;;
+        *)
+            # first param != -t = HEADLINE
+            # second param != -t = TAGS
+            if [ "$HEADLINE" == "" ]; then
+                HEADLINE="$i"
+            else
+                TAGS="$i"
+            fi
+        ;;
+    esac
+done
+
+if [ "$HEADLINE" == "" ]; then
+    echo "entries need at least a text"
+    exit 1
+fi
 
 MIN_LINE_LEN=80
 NOTE_FILE=$HOME/.notes.org
 
 
 org_timestamp="<"$(date "+%Y-%m-%d %a")">"
-org_headline="* $1 $org_timestamp"
+org_headline="* $IS_TODO$org_timestamp $HEADLINE"
 
-if [ "$2" == "" ]; then
+if [ "$TAGS" == "" ]; then
     org_tags=""
     spacer=""
 else
     # convert given tags to org-mode tags (:tag:)
-    org_tags=":"$(echo $2 | tr ' ' ':')":"
+    org_tags=":"$(echo $TAGS | tr ' ' ':')":"
 
     # calculate a spacer for tag alignment
     org_line="$org_headline$org_tags"
