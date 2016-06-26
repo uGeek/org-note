@@ -1,0 +1,27 @@
+* org-note
+
+** usage:
+
+*** add a note
+
+#+BEGIN_SRC sh
+./org-note "a todo note" "emacs shell" --todo
+#+END_SRC
+adds the line:
+#+BEGIN_SRC org
+* TODO a todo note <2016-06-25 Sa>                                   :emacs:shell:
+#+END_SRC
+
+to *$HOME/.notes.org* and prints it to stdout.
+
+*** show all notes
+
+#+BEGIN_SRC sh
+./org-note
+#+END_SRC
+
+*** open the notes in emacs
+
+#+BEGIN_SRC sh
+./org-note -o
+#+END_SRC
