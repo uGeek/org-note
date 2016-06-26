@@ -1,5 +1,7 @@
 * org-note
 
+*Take a quick note to an emacs [[http://orgmode.org/][org-mode]] file.*
+
 ** usage:
 
 *** add a note
