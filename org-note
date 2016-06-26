@@ -5,6 +5,10 @@
 # ❯ ./org-note -t "a todo note" "emacs shell"
 # * TODO a todo note <2016-06-25 Sa>                                 :emacs:shell:
 
+# for tag position
+MIN_LINE_LEN=80
+NOTE_FILE=$HOME/.notes.org
+
 for i in "$@"
 do
     case $i in
@@ -15,15 +19,22 @@ do
 
             Options:
             -h, --help          show this help message
-            -t, --todo          set entry as a TODO"
+            -t, --todo          set entry as a TODO
+            -o, --open          open ~/.notes.org
+
+                                show notes"
             exit 0
         ;;
         -t|--todo)
             IS_TODO="TODO "
         ;;
+        -o|--open)
+            emacs "$NOTE_FILE"
+            exit 0
+        ;;
         *)
-            # first param != -t = HEADLINE
-            # second param != -t = TAGS
+            # first param != flag = HEADLINE
+            # second param != flag = TAGS
             if [ "$HEADLINE" == "" ]; then
                 HEADLINE="$i"
             else
@@ -34,13 +45,9 @@ do
 done
 
 if [ "$HEADLINE" == "" ]; then
-    echo "entries need at least a text"
-    exit 1
+    tail -r "$NOTE_FILE"
+    exit 0
 fi
-
-MIN_LINE_LEN=80
-NOTE_FILE=$HOME/.notes.org
-
 
 org_timestamp="<"$(date "+%Y-%m-%d %a")">"
 org_headline="* $IS_TODO$org_timestamp $HEADLINE"
@@ -61,7 +68,6 @@ else
     fi
     spacer=$(head -c $delta < /dev/zero | tr '\0' ' ')
 fi
-
 
 org_note="$org_headline$spacer$org_tags"
 echo "$org_note"
